@@ -8,7 +8,7 @@ This role will export ASM policies to .xml files on the Ansible server and then 
 
 ## Required Vars
 
-* **policy_dir**: Directory to store xml files temporarily, will be deleted after import.
+* **policy_dir**: Directory to store xml files temporarily, files will be deleted after import.
 * **source_f5**: This is the primary device that the policies will be pulled from
 * **destination_f5**: This is the list of devices that the policies will be imported into.
 
