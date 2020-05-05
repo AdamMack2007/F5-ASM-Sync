@@ -33,7 +33,7 @@
     label: "{{ item['name'] }}"
   when: inventory_hostname == source_f5
 
-- name: Sync S1 ASM Policies to D1
+- name: Sync Source ASM Policies to Destinations
   bigip_asm_policy_import:
     name: "{{ item['name'] }}"
     provider: "{{ provider }}"
