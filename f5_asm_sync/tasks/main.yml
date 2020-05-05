@@ -1,0 +1,58 @@
+---
+- name: Create directory to store ASM xml files
+  file:
+    path: "{{ policy_dir }}"
+    state: directory
+    mode: '0755'
+
+- name: Delete Existing ASM Policy XML Files from Server
+  shell: "rm -rf {{ policy_dir }}/*.xml"
+  args:
+    warn: false
+  delegate_to: localhost
+  run_once: true
+
+- name: Get ASM Policy List
+  bigip_device_info:
+    provider: "{{ provider }}"
+    gather_subset:
+      - asm-policies
+  register: asm_policy_list
+  delegate_to: localhost
+  when: inventory_hostname == source_f5
+
+- name: Export S1 ASM Policies
+  bigip_asm_policy_fetch:
+    name: "{{ item['name'] }}"
+    provider: "{{ provider }}"
+    file: "{{ item['name'] }}.xml"
+    dest: "{{ policy_dir }}/{{ item['name'] }}.xml"
+  delegate_to: localhost
+  loop: "{{ asm_policy_list['asm_policies'] }}"
+  loop_control:
+    label: "{{ item['name'] }}"
+  when: inventory_hostname == source_f5
+
+- name: Sync S1 ASM Policies to D1
+  bigip_asm_policy_import:
+    name: "{{ item['name'] }}"
+    provider: "{{ provider }}"
+    source: "{{ policy_dir }}/{{ item['name'] }}.xml"
+  delegate_to: localhost
+  loop: "{{ hostvars[source_f5]['asm_policy_list']['asm_policies'] }}"
+  loop_control:
+    label: "{{ item['name'] }}"
+  when: inventory_hostname in destination_f5
+
+- name: Save F5 Configs
+  bigip_config:
+    save: yes
+    provider: "{{ provider }}"
+  delegate_to: localhost
+
+- name: Delete ASM Policy XML Files from Server
+  shell: "rm -rf {{ policy_dir }}/*.xml"
+  args:
+    warn: false
+  delegate_to: localhost
+  run_once: true
