@@ -21,7 +21,7 @@
   delegate_to: localhost
   when: inventory_hostname == source_f5
 
-- name: Export S1 ASM Policies
+- name: Export Source F5 ASM Policies
   bigip_asm_policy_fetch:
     name: "{{ item['name'] }}"
     provider: "{{ provider }}"
