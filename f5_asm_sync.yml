@@ -1,7 +1,0 @@
----
-- name: Sync F5 ASM Policies
-  hosts: all
-  gather_facts: no
-
-  roles:
-    - f5_asm_sync
