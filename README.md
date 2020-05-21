@@ -22,6 +22,9 @@ This role will export ASM policies to .xml files on the Ansible server and then 
   roles:
     - f5_asm_sync
  ```
+## Recommendations
+
+I strongly recommend a UCS archive backup task on the F5s prior to executing this role. To keep this role aligned with its intended function I have ommitted the backup tasks.
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
