@@ -7,8 +7,7 @@ provider:
 
 policy_dir: '/var/tmp/ASM'
 
-source_f5: f5_primary
+source_f5: ''
 
 destination_f5: 
-  - f5_2
-  - f5_3
+  - ''
